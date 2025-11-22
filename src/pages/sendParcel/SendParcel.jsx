@@ -2,14 +2,19 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
+
+  const axiosSecure = useAxiosSecure();
+  const {user} = useAuth();
 
   const allRegionsData = useLoaderData();
   const regionsDuplicate = allRegionsData.map((region) => region.region);
@@ -46,7 +51,6 @@ const SendParcel = () => {
         cost = minCharge + extraCharge;
       }
     }
-    console.log(cost);
 
     Swal.fire({
       title: "Agree with the cost?",
@@ -58,11 +62,16 @@ const SendParcel = () => {
       confirmButtonText: "I agree!",
     }).then((result) => {
       if (result.isConfirmed) {
-
-        Swal.fire({
-          title: "Submitted!",
-          text: "Your Parcel has been submitted.",
-          icon: "success",
+        //? save the parcel info to the database
+        axiosSecure.post("/parcels", data).then((res) => {
+          console.log("after saving parcels", res.data);
+          if (res.data.result.insertedId) {
+            Swal.fire({
+              title: "Submitted!",
+              text: "Your Parcel has been submitted.",
+              icon: "success",
+            });
+          }
         });
       }
     });
@@ -131,14 +140,18 @@ const SendParcel = () => {
               <input
                 type="text"
                 className="input"
+                defaultValue={user?.displayName}
+                // readOnly
                 {...register("senderName")}
                 placeholder="Sender Name"
-              />
+                />
               {/* sender email */}
               <label className="label">Sender Email</label>
               <input
                 type="email"
                 className="input"
+                defaultValue={user?.email}
+                // readOnly
                 {...register("senderEmail")}
                 placeholder="Sender Email"
               />
