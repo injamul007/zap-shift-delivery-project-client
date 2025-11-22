@@ -26,6 +26,13 @@ body {
   border-radius: 12px;
 }
 
+.active {
+  color: #03373d;
+  font-weight: 600;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
 .small-swal-popup {
   width: 250px !important;
   height: 120px !important;

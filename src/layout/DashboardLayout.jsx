@@ -1,7 +1,8 @@
 import React from "react";
-import { AiOutlineProduct } from "react-icons/ai";
+import { GoSidebarCollapse } from "react-icons/go";
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
-import { Link, Outlet } from "react-router";
+import { MdOutlineDocumentScanner } from "react-icons/md";
+import { NavLink, Outlet } from "react-router";
 
 const DashboardLayout = () => {
   return (
@@ -13,23 +14,10 @@ const DashboardLayout = () => {
           <label
             htmlFor="my-drawer-4"
             aria-label="open sidebar"
-            className="btn btn-square btn-ghost"
+            className="btn btn-square lg:hidden btn-ghost"
           >
             {/* Sidebar toggle icon */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2"
-              fill="none"
-              stroke="currentColor"
-              className="my-1.5 inline-block size-4"
-            >
-              <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-              <path d="M9 4v16"></path>
-              <path d="M14 10l2 2l-2 2"></path>
-            </svg>
+            <GoSidebarCollapse />
           </label>
           <div className="px-4">Navbar Title</div>
         </nav>
@@ -48,7 +36,7 @@ const DashboardLayout = () => {
           <ul className="menu w-full pt-16">
             {/* our dashboard links */}
             {/* List item */}
-            <Link to={"/"}>
+            <NavLink to={"/"}>
               <li>
                 <button data-tip="Homepage">
                   {/* Home icon */}
@@ -56,16 +44,16 @@ const DashboardLayout = () => {
                   <span>Homepage</span>
                 </button>
               </li>
-            </Link>
+            </NavLink>
 
-            <Link to={"/dashboard/my-parcels"}>
+            <NavLink to={"/dashboard/my-parcels"}>
               <li>
                 {""}
                 <button>
-                  <AiOutlineProduct /> My Parcels
+                  <MdOutlineDocumentScanner /> My Parcels
                 </button>
               </li>
-            </Link>
+            </NavLink>
 
             {/* List item */}
             <li>
