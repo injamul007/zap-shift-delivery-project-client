@@ -1,0 +1,70 @@
+import { createBrowserRouter } from 'react-router';
+import MainLayout from '../layout/MainLayout';
+import Home from '../pages/Home/Home';
+import Service from '../pages/Service/Service';
+import Coverage from '../pages/Coverage/Coverage';
+import AboutUs from '../pages/AboutUs/AboutUs';
+import AuthLayout from '../layout/AuthLayout';
+import Login from '../pages/Auth/Login/Login';
+import Register from '../pages/Auth/Register/Register';
+import PrivateRoute from './PrivateRoute';
+import Rider from '../Rider/Rider';
+import SendParcel from '../pages/sendParcel/SendParcel';
+
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainLayout></MainLayout>,
+    children: [
+      {
+        index: true,
+        element: <Home></Home>
+      },
+      {
+        path: '/home',
+        element: <Home></Home>
+      },
+      {
+        path: '/service',
+        element: <Service></Service>
+      },
+      {
+        path: '/coverage',
+        element: <Coverage></Coverage>,
+        hydrateFallbackElement: <p className='text-center'>Loading...</p>,
+        loader: () => fetch('/serviceCenter.json').then(res=>res.json())
+      },
+      {
+        path: '/send-parcel',
+        element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
+        hydrateFallbackElement: <p className='text-center'>Loading...</p>,
+        loader: () => fetch('/serviceCenter.json').then(res=>res.json())
+      },
+      {
+        path: '/about-us',
+        element: <AboutUs></AboutUs>
+      },
+      {
+        path: '/rider',
+        element: <PrivateRoute><Rider></Rider></PrivateRoute>
+      }
+    ]
+  },
+  {
+    path: '/auth',
+    element: <AuthLayout></AuthLayout>,
+    children: [
+      {
+        path: '/auth/login',
+        element: <Login></Login>
+      },
+      {
+        path: '/auth/register',
+        element: <Register></Register>
+      }
+    ]
+  }
+])
+
+export default router;
