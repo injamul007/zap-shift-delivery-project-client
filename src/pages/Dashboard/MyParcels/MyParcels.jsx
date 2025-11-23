@@ -2,18 +2,53 @@ import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import { LuView } from "react-icons/lu";
+import { FaRegTrashCan } from "react-icons/fa6";
+import Swal from "sweetalert2";
 
 const MyParcels = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["my-parcels", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/parcels?email=${user.email}`);
       return res.data.result;
     },
   });
+
+  const handleParcelDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .delete(`/parcels/${id}`)
+          .then((res) => {
+            console.log(res.data.result);
+            if (res.data.result.deletedCount) {
+              //? refresh the data in the UI
+              refetch();
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your Parcel request has been deleted.",
+                icon: "success",
+              });
+            }
+          })
+          .catch((error) => console.log(error.message));
+      }
+    });
+  };
 
   return (
     <div className="w-11/12 mx-auto">
@@ -22,7 +57,7 @@ const MyParcels = () => {
       </h1>
 
       <div>
-        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+        <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mb-8">
           <table className="table">
             {/* head */}
             <thead>
@@ -35,15 +70,38 @@ const MyParcels = () => {
               </tr>
             </thead>
             <tbody>
-              {
-                parcels.map((parcel,idx) => <tr key={parcel._id}>
-                <th>{idx+1}</th>
-                <td>{parcel.parcelName}</td>
-                <td>{parcel.cost}</td>
-                <td>Blue</td>
-                <td>Blue</td>
-              </tr>)
-              }
+              {parcels.map((parcel, idx) => (
+                <tr key={parcel._id}>
+                  <th>{idx + 1}</th>
+                  <td>{parcel.parcelName}</td>
+                  <td>{parcel.cost}</td>
+                  <td>Blue</td>
+                  <td>
+                    {/* actions div */}
+                    <div className="space-x-2">
+                      <button
+                        className="btn btn-square hover:bg-green-300"
+                        title="View"
+                      >
+                        <LuView />
+                      </button>
+                      <button
+                        className="btn btn-square hover:bg-blue-300"
+                        title="Edit"
+                      >
+                        <FaRegEdit />
+                      </button>
+                      <button
+                        className="btn btn-square hover:bg-red-400"
+                        title="Delete"
+                        onClick={() => handleParcelDelete(parcel._id)}
+                      >
+                        <FaRegTrashCan />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
