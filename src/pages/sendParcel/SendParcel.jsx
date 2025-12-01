@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
@@ -12,9 +12,10 @@ const SendParcel = () => {
     control,
     // formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
 
   const axiosSecure = useAxiosSecure();
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const allRegionsData = useLoaderData();
   const regionsDuplicate = allRegionsData.map((region) => region.region);
@@ -68,10 +69,16 @@ const SendParcel = () => {
         axiosSecure.post("/parcels", data).then((res) => {
           console.log("after saving parcels", res.data);
           if (res.data.result.insertedId) {
+            navigate('/dashboard/my-parcels')
             Swal.fire({
-              title: "Submitted!",
-              text: "Your Parcel has been submitted.",
+              position: "top-end",
               icon: "success",
+              title: "Parcel has created. Please Pay",
+              showConfirmButton: false,
+              timer: 2000,
+              customClass: {
+                popup: "small-swal-popup",
+              },
             });
           }
         });
@@ -146,7 +153,7 @@ const SendParcel = () => {
                 // readOnly
                 {...register("senderName")}
                 placeholder="Sender Name"
-                />
+              />
               {/* sender email */}
               <label className="label">Sender Email</label>
               <input
