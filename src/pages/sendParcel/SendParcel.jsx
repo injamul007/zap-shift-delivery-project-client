@@ -62,12 +62,12 @@ const SendParcel = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "I agree!",
+      confirmButtonText: "Confirm and Continue for Payment!",
     }).then((result) => {
       if (result.isConfirmed) {
         //? save the parcel info to the database
         axiosSecure.post("/parcels", data).then((res) => {
-          console.log("after saving parcels", res.data);
+          // console.log("after saving parcels", res.data);
           if (res.data.result.insertedId) {
             navigate('/dashboard/my-parcels')
             Swal.fire({
