@@ -50,7 +50,7 @@ const PaymentHistory = () => {
                   <td>
                     {payment.trackingId}
                   </td>
-                  <td>{payment.currency} <span className="font-bold">{payment?.amount}</span> ({payment.paymentStatus})</td>
+                  <td>$ <span className="font-bold">{payment?.amount}</span> ({payment.paymentStatus})</td>
                   <td>
                     {/* actions div */}
                     <div className="space-x-2">
