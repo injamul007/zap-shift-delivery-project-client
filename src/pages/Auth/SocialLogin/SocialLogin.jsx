@@ -2,18 +2,20 @@ import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const SocialLogin = () => {
   const { googleLoginFunc, setUser, setLoading } = useAuth();
-  const location = useLocation()
+  const location = useLocation();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const handleGoogleLogin = () => {
     googleLoginFunc()
       .then((result) => {
         result.user;
-        setLoading(false)
-        setUser(result.user)
+        setLoading(false);
+        setUser(result.user);
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -25,6 +27,25 @@ const SocialLogin = () => {
           },
         });
         navigate(`${location.state ? location.state : "/"}`);
+        
+        //? create user in the database
+        const userInfo = {
+          email: result.user.email,
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+        };
+
+        axiosSecure
+          .post("/users", userInfo)
+          .then((res) => {
+            if (res.data.result.insertedId) {
+              console.log("user created in the DB -->", res.data.result);
+            }
+          })
+          .catch((err) => {
+            console.log(err.message);
+            console.log(err.response.data.message);
+          });
       })
       .catch((error) => console.log(error.message));
   };
