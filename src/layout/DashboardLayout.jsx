@@ -1,4 +1,5 @@
 import React from "react";
+import { FaCreditCard } from "react-icons/fa";
 import { GoSidebarCollapse } from "react-icons/go";
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineDocumentScanner } from "react-icons/md";
@@ -19,7 +20,7 @@ const DashboardLayout = () => {
             {/* Sidebar toggle icon */}
             <GoSidebarCollapse />
           </label>
-          <div className="px-4">Navbar Title</div>
+          <div className="px-4 font-bold">My Dashboard</div>
         </nav>
         {/* Page content here */}
         <Outlet></Outlet>
@@ -51,6 +52,15 @@ const DashboardLayout = () => {
                 {""}
                 <button>
                   <MdOutlineDocumentScanner /> My Parcels
+                </button>
+              </li>
+            </NavLink>
+            
+            <NavLink to={"/dashboard/payment-history"}>
+              <li>
+                {""}
+                <button>
+                  <FaCreditCard /> Payment History
                 </button>
               </li>
             </NavLink>
