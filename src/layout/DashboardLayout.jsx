@@ -2,7 +2,8 @@ import React from "react";
 import { FaCreditCard } from "react-icons/fa";
 import { GoSidebarCollapse } from "react-icons/go";
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineDocumentScanner } from "react-icons/md";
+import { RiEBike2Fill } from "react-icons/ri";
+import { TfiPackage } from "react-icons/tfi";
 import { NavLink, Outlet } from "react-router";
 
 const DashboardLayout = () => {
@@ -51,7 +52,7 @@ const DashboardLayout = () => {
               <li>
                 {""}
                 <button>
-                  <MdOutlineDocumentScanner /> My Parcels
+                  <TfiPackage /> My Parcels
                 </button>
               </li>
             </NavLink>
@@ -61,6 +62,15 @@ const DashboardLayout = () => {
                 {""}
                 <button>
                   <FaCreditCard /> Payment History
+                </button>
+              </li>
+            </NavLink>
+
+            <NavLink to={"/dashboard/approve-riders"}>
+              <li>
+                {""}
+                <button>
+                  <RiEBike2Fill /> Approve Riders
                 </button>
               </li>
             </NavLink>

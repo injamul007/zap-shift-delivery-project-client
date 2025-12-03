@@ -33,8 +33,7 @@ const PaymentHistory = () => {
             {/* head */}
             <thead>
               <tr>
-                <th></th>
-                {/* <th>NO.</th> */}
+                <th>No</th>
                 <th>Parcel Name</th>
                 <th>Transaction ID</th>
                 <th>Tracking ID</th>
@@ -46,7 +45,7 @@ const PaymentHistory = () => {
             <tbody>
               {payments.map((payment, idx) => (
                 <tr key={payment._id}>
-                  <td>{idx + 1}</td>
+                  <th>{idx + 1}</th>
                   <td>{payment.parcelName}</td>
                   <td>{payment.transactionId}</td>
                   <td>

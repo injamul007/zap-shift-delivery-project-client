@@ -16,6 +16,7 @@ import Payment from '../pages/Dashboard/Payment/Payment';
 import PaymentSuccess from '../pages/Dashboard/Payment/PaymentSuccess';
 import PaymentCancelled from '../pages/Dashboard/Payment/PaymentCancelled';
 import PaymentHistory from '../pages/Dashboard/PaymentHistory/PaymentHistory';
+import ApproveRiders from '../pages/Dashboard/ApproveRiders/ApproveRiders';
 
 
 const router = createBrowserRouter([
@@ -53,7 +54,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/rider',
-        element: <PrivateRoute><Rider></Rider></PrivateRoute>
+        element: <PrivateRoute><Rider></Rider></PrivateRoute>,
+        hydrateFallbackElement: <p className='text-center'>Loading...</p>,
+        loader: () => fetch('/serviceCenter.json').then(res=>res.json())
       }
     ]
   },
@@ -82,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/payment-history",
         element: <PaymentHistory></PaymentHistory>
+      },
+      {
+        path: "/dashboard/approve-riders",
+        element: <ApproveRiders></ApproveRiders>
       },
       {
         path: `/dashboard/payment/:parcelId`,
