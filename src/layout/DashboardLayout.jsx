@@ -1,5 +1,5 @@
 import React from "react";
-import { FaCreditCard } from "react-icons/fa";
+import { FaCreditCard, FaUsers } from "react-icons/fa";
 import { GoSidebarCollapse } from "react-icons/go";
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { RiEBike2Fill } from "react-icons/ri";
@@ -71,6 +71,15 @@ const DashboardLayout = () => {
                 {""}
                 <button>
                   <RiEBike2Fill /> Approve Riders
+                </button>
+              </li>
+            </NavLink>
+
+            <NavLink to={"/dashboard/users-management"}>
+              <li>
+                {""}
+                <button>
+                  <FaUsers /> Users Management
                 </button>
               </li>
             </NavLink>
