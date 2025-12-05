@@ -5,8 +5,13 @@ import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { RiEBike2Fill } from "react-icons/ri";
 import { TfiPackage } from "react-icons/tfi";
 import { NavLink, Outlet } from "react-router";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
+
+  const {role} = useRole();
+
+
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -66,7 +71,9 @@ const DashboardLayout = () => {
               </li>
             </NavLink>
 
-            <NavLink to={"/dashboard/approve-riders"}>
+            {
+              role === "admin" && <>
+                <NavLink to={"/dashboard/approve-riders"}>
               <li>
                 {""}
                 <button>
@@ -83,6 +90,8 @@ const DashboardLayout = () => {
                 </button>
               </li>
             </NavLink>
+              </>
+            }
 
             {/* List item */}
             <li>

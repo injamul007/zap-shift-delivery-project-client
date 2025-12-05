@@ -10,12 +10,17 @@ const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const [mutationId, setMutationId] = useState(null);
+  const [searchText, setSearchText] = useState("");
 
-  const { data: users = [], isLoading } = useQuery({
-    queryKey: ["users"],
+  const {
+    data: users = [],
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["users", searchText],
     queryFn: async () => {
-      const result = await axiosSecure.get("/users");
-      return result.data.result;
+      const result = await axiosSecure.get(`/users?searchUser=${searchText}`);
+      return result.data.result ?? [];
     },
   });
 
@@ -24,7 +29,7 @@ const UsersManagement = () => {
       const roleUpdate = { role: role };
       try {
         const result = await axiosSecure.patch(
-          `/users/${user._id}`,
+          `/users/${user._id}/role`,
           roleUpdate
         );
         return result.data;
@@ -64,7 +69,7 @@ const UsersManagement = () => {
       });
     },
     onSettled: () => {
-      queryClient.invalidateQueries(["users"]);
+      queryClient.invalidateQueries(["users", searchText]);
       setMutationId(null);
     },
   });
@@ -119,12 +124,40 @@ const UsersManagement = () => {
   };
 
   if (isLoading) return <Loading></Loading>;
+  if (isFetching) return <Loading></Loading>;
 
   return (
     <div className="w-11/12 mx-auto">
-      <h2 className="text-3xl text-center my-6 font-semibold">
-        Manage Users : {users.length}
-      </h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-3xl text-center my-6 font-semibold">
+          Manage Users : {users.length}
+        </h2>
+        <div>
+          <label className="input">
+            <svg
+              className="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input
+              type="search"
+              placeholder="Search Users"
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </label>
+        </div>
+      </div>
 
       <div>
         <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mb-8">

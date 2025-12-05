@@ -23,11 +23,12 @@ const useAxiosSecure = () => {
       return response;
     }, (error)=> {
       console.log(error)
+      console.log(error.message)
 
       const statusCode = error.status;
       if(statusCode === 401 || statusCode === 403) {
         logOut().then(() => {
-          navigate('/login')
+          navigate('/auth/login')
         }).catch(error => console.log(error.message))
       }
 
